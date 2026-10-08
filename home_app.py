@@ -30,6 +30,7 @@ CONFIG = {
                    "The results are not investment advice."),
     "max_width_px": 1040,          # width of the content column
     "card_text_align": "left",     # "left" or "center" for the text inside the four cards
+    "show_plot": False,            # True shows the schematic risk and return picture under the subtitle
     # Settings of the schematic risk and return picture at the top
     "plot_dots": 16, "plot_seed": 11,
 }
@@ -292,12 +293,12 @@ st.set_page_config(page_title=CONFIG["page_title"], layout="wide", initial_sideb
 css = CSS.replace("__MAXW__", str(int(CONFIG["max_width_px"]))).replace("__ALIGN__", CONFIG["card_text_align"])
 st.markdown(f"<style>{' '.join(css.split())}</style>", unsafe_allow_html=True)
 
-# Step 2: title, subtitle and the schematic picture
+# Step 2: title, subtitle and, if CONFIG["show_plot"] is True, the schematic picture
 st.markdown(
     '<div class="hp">'
     f'<div class="hp-title" role="heading" aria-level="1">{escape(CONFIG["title"])}</div>'
     f'<div class="hp-sub">{escape(CONFIG["subtitle"])}</div>'
-    f'{frontier_svg(CONFIG["plot_dots"], CONFIG["plot_seed"])}'
+    f'{frontier_svg(CONFIG["plot_dots"], CONFIG["plot_seed"]) if CONFIG["show_plot"] else ""}'
     '</div>', unsafe_allow_html=True)
 
 # Step 3: the four tool cards
@@ -326,3 +327,5 @@ st.markdown(
 #   STEPS_FOOTNOTE, NOTES, CSS, link, frontier_svg, card_html, guide_html,
 #   steps_html, section, the optional "extra" row in card_html, and the page
 #   build in section 4.
+# v1.1 (2026-10-08)  Added: CONFIG["show_plot"] (default False). Modified: the
+#   frontier_svg line in step 2 of the page build now runs only if show_plot is True.
